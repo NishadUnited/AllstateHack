@@ -1,0 +1,63 @@
+apply plugin: 'maven-publish'
+
+ext {
+    artifactoryReleaseUrl = 'https:/your.artifactory.server.location/artifactory/libs-release-local'
+    artifactoryUsername = project.hasProperty('artifactoryUsername') ? artifactoryUsername : ''
+    artifactoryPassword = project.hasProperty('artifactoryPassword') ? artifactoryPassword : ''
+}
+
+group = 'com.allstate.ccp.a6'
+archivesBaseName = 'a6-subscriber'
+version = '1.0'
+
+if (System.env.SOURCE_BUILD_NUMBER) {
+    version = "${version}.${System.env.SOURCE_BUILD_NUMBER}"
+}
+
+publishing {
+    publications {
+        a6Subscriber(MavenPublication) {
+            from components.java
+            artifactId archivesBaseName
+
+            pom {
+                withXml {
+                    def dependencyManagement = asNode().appendNode('dependencyManagement')
+                    def dependencies = dependencyManagement.appendNode('dependencies')
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', 'org.springframework.boot')
+                    dependency.appendNode('artifactId', 'spring-boot-dependencies')
+                    dependency.appendNode('version', springBootVersion)
+                    dependency.appendNode('type', 'pom')
+                    dependency.appendNode('scope', 'import')
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name 'artifactory'
+            url artifactoryReleaseUrl
+            credentials {
+                username = artifactoryUsername
+                password = artifactoryPassword
+            }
+        }
+    }
+}
+
+publish.dependsOn build
+
+configurations {
+    a6Subscriber
+}
+
+dependencies {
+    a6Subscriber "$group:$archivesBaseName:latest.integration@jar"
+}
+
+task fetchA6SubscriberJar(type: Copy) {
+    from configurations.a6Subscriber
+    into "$buildDir/download"
+}

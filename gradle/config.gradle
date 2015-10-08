@@ -1,0 +1,6 @@
+def env = hasProperty('env') ? property('env') : 'local'
+def configFile = file("$rootDir/gradle/buildConfig.groovy")
+def parsedConfig = new ConfigSlurper(env).parse(configFile.toURL())
+ext {
+    config = parsedConfig
+}

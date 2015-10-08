@@ -1,0 +1,31 @@
+buildscript {
+    ext {
+        artifactoryUrl = 'https://cf-artifactory-test.allstate.com/artifactory/libs-release'
+        springBootVersion = '1.3.0.M5'
+    }
+
+    repositories {
+        maven {
+            url artifactoryUrl
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.1'
+    }
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+apply from: "$projectDir/gradle/config.gradle"
+apply from: "$projectDir/gradle/dependencies.gradle"
+apply from: "$projectDir/gradle/test.gradle"
+apply from: "$projectDir/gradle/codeQuality.gradle"
+apply from: "$projectDir/gradle/distribution.gradle"
+apply from: "$projectDir/gradle/deployment.gradle"
+
+apply from: "$projectDir/gradle/git.gradle"

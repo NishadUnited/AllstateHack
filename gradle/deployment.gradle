@@ -1,0 +1,26 @@
+apply plugin: 'cloudfoundry'
+
+ext {
+    cfUsername = System.env.CF_USERNAME
+    cfPassword = System.env.CF_PASSWORD
+}
+
+cloudfoundry {
+    target = config.cf.target
+    space = config.cf.space
+    username = cfUsername
+    password = cfPassword
+    trustSelfSignedCerts = true
+    file = fileTree(dir: "${buildDir}/download", include: ['*.jar']).files[0]
+    uri = config.cf.appUri
+    startApp = false
+    application = config.cf.appName
+
+    services {
+        'mongoDB' {
+            label = 'mongolab'
+            plan = 'sandbox'
+            bind = true
+        }
+    }
+}
