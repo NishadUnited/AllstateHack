@@ -1,0 +1,9 @@
+pairs:
+  # <initials>: <Firstname> <Lastname>[; <email-id>]
+  jc: Jared Carroll
+  gf: George Foster
+  js: Justin Safford
+  gl: Greg Laubenstein
+email:
+  prefix: pair
+  domain: pivotal.io

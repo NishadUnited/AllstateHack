@@ -5,7 +5,14 @@
 .idea/tasks.xml
 *.iml
 
+# Eclipse
+.classpath
+.project
+.settings/
+
 # Gradle
 .gradle/
 build/
+out/
 gradle.properties
+/bin/
