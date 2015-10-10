@@ -1,0 +1,12 @@
+server.port: 9090
+
+subscriber.sleep-time: 5000
+
+spring.data.mongodb.database: subscriber
+
+---
+spring.profiles: test
+
+subscriber.sleep-time: 100
+
+spring.data.mongodb.database: subscriber-test
