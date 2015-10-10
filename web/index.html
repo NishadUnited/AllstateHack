@@ -5,7 +5,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<!-- Load c3.css -->
 	<link href="bower_components/c3/c3.css" rel="stylesheet" type="text/css">
-	
+
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 </head>
@@ -16,7 +16,7 @@
 	<ul id="stageRow1">
 		<li class="stage" id="mainStage">
 			<span class="heading">home index</span>
-			<div id="normalityGraph"></div>
+			<div class="stageContent" id="normalityGraph"></div>
 		</li>
 		<li class = "stage" id="sideStage">
 			<span class="heading">events</span>
@@ -24,16 +24,24 @@
 	</ul>
 	<ul id="stageRow2">
 		<li class="stage subStage">
-			<span class="heading">door opens</span>
+			<span class="heading">energy consumed</span>
+			<div class="stageContent ticker">
+				12,000<sub>kWhr</sub>
+			</div>
 		</li>
 		<li class="stage subStage">
-			<span class="heading">garage opens</span>
+			<span class="heading">water used</span>
+			<div class="stageContent ticker">
+				400<sub>gallons</sub>
+			</div>
 		</li>
 		<li class="stage subStage">
 			<span class="heading">activity</span>
+			<div id="activityGauge" class="stageContent"></div>
 		</li>
 		<li class="stage subStage">
 			<span class="heading">noise</span>
+			<div id="noiseGraph" class="stageContent"></div>
 		</li>
 	</ul>
 </div>
@@ -54,6 +62,41 @@ var normalityGraph = c3.generate({
       colors:{
       	data1: '#fff'
       }
+	}
+});
+
+var activityGauge = c3.generate({
+	bindto:'#activityGauge',
+	data:{
+		columns:[
+			['data1', 60]
+		],
+		colors:{
+      		data1: '#fff'
+      	},
+      	type:'gauge'
+	}
+});
+
+var noiseGraph = c3.generate({
+	bindto: '#noiseGraph',
+	data: {
+      columns: [
+        ['data1', 30, 200, 100, 400, 150, 250]
+      ],
+      colors:{
+      	data1: '#fff'
+      },
+      type:'bar'
+	},
+	axis:{
+		x:{
+			tick:{
+				culling:{
+					max:4
+				}
+			}
+		}
 	}
 });
 

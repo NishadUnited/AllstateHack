@@ -54,6 +54,7 @@ header{
 	background-color: #222;
 	display: inline-block;	
 	height: 100%;
+	position: relative;
 }
 
 #container .stage::after{
@@ -70,14 +71,31 @@ header{
 	margin-top: -4px;
 }
 
-#container #mainStage #normalityGraph{
+#container .stageContent{
 	width: 90%;
 	float: right;
 	margin-right: 5%;
+	margin-left: 5%;
 
 	height: 80%;
 	margin-bottom: 5%;
 
+}
+
+.subStage .ticker{
+
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 26pt;
+	text-align: center;
+	
+	line-height: 500%;
+	vertical-align: middle;
+
+
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 #container #sideStage{
@@ -97,9 +115,7 @@ header{
 
 
 
-
-
-.c3-axis-y .tick, .c3-axis-y-label, .c3-axis-x .tick, .c3-axis-x-label, .c3-legend-item{
+.c3-chart-arc .c3-gauge-value, .c3-axis-y .tick, .c3-axis-y-label, .c3-axis-x .tick, .c3-axis-x-label, .c3-legend-item{
 	fill:#fff;
 }
 
