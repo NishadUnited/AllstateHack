@@ -5,7 +5,7 @@ from random import randint
 
 github_url = 'http://a6.cfapps.io/groups/245bb05a-48dc-4607-af08-8a22649528c1/sensors/47a7e2b9-df5d-4f4e-9925-a74b6b80888a/data'
 
-time = 1420070400
+time = 1420099200 # Starting 1/1/2015, 0:0:0
 
 #door = 100
 #doorc = 0
@@ -23,8 +23,8 @@ audio = 0
 audioRangeLow = 0
 audioRangeHigh = 100
 
-for x in xrange (1, 60): #Usually use 10080 for 1 week
-	time = time + 60 
+for x in xrange (0, 60): #Usually use 10080 for 1 week
+	
 
 	#seconds = datetime.datetime.fromtimestamp(time).strftime('%S')
 	minutes = datetime.datetime.fromtimestamp(time).strftime('%M')
@@ -102,5 +102,5 @@ for x in xrange (1, 60): #Usually use 10080 for 1 week
 	c.setopt(pycurl.POSTFIELDS, data)
 	c.perform()
 
-
+	time = time + 60 
 
