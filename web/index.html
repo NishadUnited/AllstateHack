@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IoT Dashboard</title>
+	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<!-- Load c3.css -->
+	<link href="bower_components/c3/c3.css" rel="stylesheet" type="text/css">
+	
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+</head>
+<body>
+
+<header></header>
+<div id="container">
+	<ul id="stageRow1">
+		<li class="stage" id="mainStage">
+			<span class="heading">home index</span>
+			<div id="normalityGraph"></div>
+		</li>
+		<li class = "stage" id="sideStage">
+			<span class="heading">events</span>
+		</li>
+	</ul>
+	<ul id="stageRow2">
+		<li class="stage subStage">
+			<span class="heading">door opens</span>
+		</li>
+		<li class="stage subStage">
+			<span class="heading">garage opens</span>
+		</li>
+		<li class="stage subStage">
+			<span class="heading">activity</span>
+		</li>
+		<li class="stage subStage">
+			<span class="heading">noise</span>
+		</li>
+	</ul>
+</div>
+
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+<!-- Load d3.js and c3.js -->
+<script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
+<script src="bower_components/c3/c3.min.js"></script>
+
+<script type="text/javascript">
+	
+var normalityGraph = c3.generate({
+	bindto: '#normalityGraph',
+	data: {
+      columns: [
+        ['data1', 30, 200, 100, 400, 150, 250]
+      ],
+      colors:{
+      	data1: '#fff'
+      }
+	}
+});
+
+</script>
+
+</body>
+</html>

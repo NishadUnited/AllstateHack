@@ -1,0 +1,108 @@
+html{
+	height: 100%;
+	width: 100%;
+	display: block;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+body{
+	background-color: #444;
+	height: 95%;
+	width: 100%;
+	display: block;
+	position: relative;
+
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+header{
+	width: 100%;
+	display: block;
+	height: 40px;
+	background-color: #111;
+}
+
+#container{
+
+	display: block;
+	width: 80%;
+	height: 80%;
+	margin-left: 10%;
+	margin-top: 5%;
+}
+#container ul{
+	float:left;
+	width: 100%;
+	padding: 0px;
+	margin: 1px;
+}
+
+#container #stageRow1{
+	height: 60%;
+	display: inline-table;
+}
+
+#container #stageRow2{
+	display: inline-table;
+	height: 40%;
+}
+
+#container .stage{
+	background-color: #222;
+	display: inline-block;	
+	height: 100%;
+}
+
+#container .stage::after{
+	content: '';
+	background-color: #444;
+	width: 2px;
+	height: 100%;
+	z-index: 999;
+	display: block;
+}
+
+#container #mainStage{
+	width: 80%;	
+	margin-top: -4px;
+}
+
+#container #mainStage #normalityGraph{
+	width: 90%;
+	float: right;
+	margin-right: 5%;
+
+	height: 80%;
+	margin-bottom: 5%;
+
+}
+
+#container #sideStage{
+	width: 20%;
+}
+#container .subStage{
+	width: 25%;
+}
+#container .heading{
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 18pt;
+	float: right;
+	margin-right: 20px;
+	margin-top: 20px;
+}
+
+
+
+
+
+.c3-axis-y .tick, .c3-axis-y-label, .c3-axis-x .tick, .c3-axis-x-label, .c3-legend-item{
+	fill:#fff;
+}
+
+.c3 .domain, .c3 line{
+	stroke:#fff; 
+}
