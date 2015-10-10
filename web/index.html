@@ -7,11 +7,13 @@
 	<link href="bower_components/c3/c3.css" rel="stylesheet" type="text/css">
 
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-
+	<meta charset="UTF-8">
 </head>
 <body>
 
-<header></header>
+<header>
+	<span>Nishad's Home</span>
+</header>
 <div id="container">
 	<ul id="stageRow1">
 		<li class="stage" id="mainStage">
@@ -20,18 +22,23 @@
 		</li>
 		<li class = "stage" id="sideStage">
 			<span class="heading">events</span>
+			<ul id="events" class="stageContent">
+
+			<div id="abnormalities"></div>
+
+			</ul>
 		</li>
 	</ul>
 	<ul id="stageRow2">
 		<li class="stage subStage">
 			<span class="heading">energy consumed</span>
-			<div class="stageContent ticker">
+			<div id="energyConsumedData" class="stageContent ticker">
 				12,000<sub>kWhr</sub>
 			</div>
 		</li>
 		<li class="stage subStage">
 			<span class="heading">water used</span>
-			<div class="stageContent ticker">
+			<div id="waterConsumedData" class="stageContent ticker">
 				400<sub>gallons</sub>
 			</div>
 		</li>
@@ -51,17 +58,42 @@
 <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
 <script src="bower_components/c3/c3.min.js"></script>
 
+<script type="text/javascript" src="https://www.parse.com/downloads/javascript/parse-1.6.5.js"></script>
+
 <script type="text/javascript">
-	
+
+Parse.initialize("RlOF7ViCpvt0d7H8nE7TYHz8HbQtSCfma3GopAsg", "aoc0iFEfvQ3UOZQXTxnErO5UXZX0AcBBUYwCWUqB");
+
+var sensorData = Parse.Object.extend('sensorData');
+var AverageDump = Parse.Object.extend('AverageDump');
+
+var averageDumpQuery = new Parse.Query(AverageDump);
+averageDumpQuery.limit(1);
+averageDumpQuery.descending('createdAt');
+
+
+var dailySumQuery = new Parse.Query(sensorData);
+dailySumQuery.limit(60*24);
+dailySumQuery.descending('createdAt');
+
+var liveActivityQuery = new Parse.Query(sensorData);
+liveActivityQuery.limit(6);
+liveActivityQuery.descending('createdAt');
+
+
+var baseline = ['baseline', 0.0, 0.0, 0.0, 0.47215588276529535, 0.9470101840943392, 0.8038868873893248, 0.9855273000550936, 1.106439347738081, 0.7457519753446081, 0.1, 0.1, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0.4068065612619439, 0.5810189949254058, 0.22772261830050983, 0.0, 0.0, 0.0, 0.0];
+
 var normalityGraph = c3.generate({
 	bindto: '#normalityGraph',
 	data: {
       columns: [
-        ['data1', 30, 200, 100, 400, 150, 250]
+      	baseline
       ],
       colors:{
-      	data1: '#fff'
-      }
+      	home: '#fff',
+      	baseline:'#aaa'
+      },
+      type:'spline'
 	}
 });
 
@@ -69,10 +101,10 @@ var activityGauge = c3.generate({
 	bindto:'#activityGauge',
 	data:{
 		columns:[
-			['data1', 60]
+			['IR', 60]
 		],
 		colors:{
-      		data1: '#fff'
+      		IR: '#fff'
       	},
       	type:'gauge'
 	}
@@ -82,10 +114,10 @@ var noiseGraph = c3.generate({
 	bindto: '#noiseGraph',
 	data: {
       columns: [
-        ['data1', 30, 200, 100, 400, 150, 250]
+        ['audio', 30, 200, 100, 400, 150, 250]
       ],
       colors:{
-      	data1: '#fff'
+      	audio: '#fff'
       },
       type:'bar'
 	},
@@ -99,6 +131,125 @@ var noiseGraph = c3.generate({
 		}
 	}
 });
+
+
+setInterval(function(){
+	averageDumpQuery.find({
+		success: function(results){
+			var loadData = results[0].get('array');
+			var normalityData = ['home'];
+			for (var i = 0; i < loadData.length; i++) {
+				normalityData[i+1] = loadData[i];
+			};
+			// console.log(results[0].get('array'));
+			normalityGraph.load({
+				columns:[
+				normalityData
+				]
+			});
+
+
+			$('#events').html('<div id="abnormalities"></div>');
+			var breakfastTime = 6;
+			for (var i = 6; i < 9; i++) {
+				if(normalityData[breakfastTime] < normalityData[i])
+					breakfastTime=i;
+			};
+			$('#events').append("<li>Breakfast at "+breakfastTime+":00</li>");
+
+			var backFromWorkTime = 4;
+			for (var i = 4; i < 7; i++) {
+				if(normalityData[backFromWorkTime] < normalityData[i])
+					backFromWorkTime=i;
+			};
+			$('#events').append("<li>Home was empty between "+(breakfastTime+1)+":00 and "+(backFromWorkTime - 1)+":00</li>");
+			$('#events').append("<li>Everyone got back home at "+backFromWorkTime+":00</li>");
+
+			for (var i = 0; i < normalityData.length; i++) {
+				if(Math.abs((normalityData[i]-baseline[i])) > 0.4){
+					if ((0<= i && i < 6) || (breakfastTime <= i && i <= backFromWorkTime) || (10 < i && i <=23)) {
+						$('#events #abnormalities').append("<li>Abnormality at "+(i-1)+":00 <span>▲</span></li>");
+					} else {
+						$('#events #abnormalities').append("<li>Abnormality at "+(i-1)+":00 <span>▼</span></li>");
+					}
+					
+				}
+			};
+
+		}
+	});
+
+	dailySumQuery.find({
+  success: function(results) {
+    alert("Successfully retrieved " + results.length + " values.");
+    // Do something with the returned Parse.Object values
+    var energySum = 0;
+    var waterSum = 0;
+    for (var i = 0; i < results.length; i++) {
+      var object = results[i].get('data').homeWaterSensorAlarmOff;
+      energySum += parseInt(object.Energy.value);
+      waterSum += parseInt(object.Water.value);
+      // console.log(object.Energy.value);
+    }
+    energySum = Math.round(energySum/1000)/10;
+    waterSum = Math.round(waterSum/160)/10;
+
+    $('.stage #energyConsumedData').html(energySum + '<sub>kWhr</sub>');
+    $('.stage #waterConsumedData').html(Math.round(waterSum) + '<sub>gallons</sub>');
+    // console.log(energySum);
+
+  },
+  error: function(error) {
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
+
+	liveActivityQuery.find({
+		success:function(results){
+			// console.log(results);
+			var activity = results[0].get('data').homeWaterSensorAlarmOff.IRSensor.value;
+			activityGauge.load({
+				columns:[
+					['IR',activity]
+				]
+			});
+
+			var audio = ['audio'];
+
+			for (var i = 0; i < results.length; i++) {
+				audio[i+1] = results[i].get('data').homeWaterSensorAlarmOff.audioSensor.value;
+			};
+
+			// console.log(audio);
+
+			noiseGraph.load({
+				columns:[
+					audio
+				]
+			});
+			// console.log(activity);
+
+		},
+		failure: function(error){
+			 alert("Error: " + error.code + " " + error.message);
+		}
+	});
+
+	// sensorRecord = new sensorData();
+	// sensorRecord.set("data", 
+	// 	{
+	// 		homeWaterSensorAlarmOff:{
+	// 			Water:{value:"0"},
+	// 			Energy:{value:"0"},
+	// 			IRSensor:{value:(Math.floor(Math.random() * 100) + 1)},
+	// 			audioSensor:{value:"0"},
+	// 			timestamp
+	// 		}
+	// 	});
+	// sensorRecord.save();
+
+}, 1000);
+
 
 </script>
 
