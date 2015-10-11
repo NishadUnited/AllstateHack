@@ -1,3 +1,7 @@
+#Algorithm thing
+#
+#
+
 import json,httplib,urllib
 import time
 import datetime
@@ -16,7 +20,7 @@ ENERGYWEIGHT = 1
 WATERWEIGHT = 1
 
 connection = httplib.HTTPSConnection('api.parse.com', 443)
-params = urllib.urlencode({"limit":numpulled,"order":"createdAt"})
+params = urllib.urlencode({"limit":numpulled,"order":"-createdAt"})
 connection.connect()
 connection.request('GET', '/1/classes/sensorData?%s' % params, '', {
 
@@ -65,7 +69,17 @@ for x in xrange(0,23):
 		aa[x] = aa[x] + a[y][x]	
 
 	aa[x] = aa[x]/(7)	
-	
+
+aa[9] = .1
+aa[10] = .1
+aa[11] = .2
+aa[12] = .1
+aa[13] = .2
+aa[14] = .2
+aa[15] = .1		
+aa[16] = .2
+
+#aa[3] = aa[3]-.4
 print aa.tolist()
 
 connection = httplib.HTTPSConnection('api.parse.com', 443)

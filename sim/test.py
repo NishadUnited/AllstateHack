@@ -1,10 +1,3 @@
-#Simulator python script
-#
-#Edit total for total runs generated and posted
-#
-#
-#
-
 import pycurl, json
 import time
 import datetime
@@ -13,8 +6,6 @@ from random import randint
 github_url = 'http://a6.cfapps.io/groups/245bb05a-48dc-4607-af08-8a22649528c1/sensors/47a7e2b9-df5d-4f4e-9925-a74b6b80888a/data'
 
 time = 1420099200 # Starting 1/1/2015, 0:0:0
-
-total = 560
 
 water = 0
 waterRangeLow = 0
@@ -34,7 +25,7 @@ audio = 0
 audioRangeLow = 0
 audioRangeHigh = 100
 
-for x in xrange (0, total): #Usually use 10080 for 1 week
+for x in xrange (1000, 1000): #Usually use 10080 for 1 week
 	
 
 	#seconds = datetime.datetime.fromtimestamp(time).strftime('%S')
@@ -46,41 +37,41 @@ for x in xrange (0, total): #Usually use 10080 for 1 week
 		#doorc = 15
 		#garagec = 80
 		heatRangeLow = 0
-		heatRangeHigh = 5
+		heatRangeHigh = 10
 		audioRangeLow = 0
 		audioRangeHigh = 10
 		energyRangeLow = 0
 		energyRangeHigh = 3
 		waterRangeLow = 0
-		waterRangeHigh = 10
+		waterRangeHigh = 15
 	
-	elif (8 < hour <= 9):
+	elif (8 < hour <= 11):
 		#doorc = 30
 		#garagec = 90
 		heatRangeLow = 40
 		heatRangeHigh = 95
 		audioRangeLow = 10
-		audioRangeHigh = 30
+		audioRangeHigh = 50
 		energyRangeLow = 0
 		energyRangeHigh = 10
 		waterRangeLow = 0
 		waterRangeHigh = 40
 	
 
-	elif (9 < hour <= 17):
+	elif (11 < hour <= 16):
 		#doorc = 90
 		#garagec = 99
-		heatRangeLow = 5
+		heatRangeLow = 0
 		heatRangeHigh = 5
-		audioRangeLow = 5
+		audioRangeLow = 0
 		audioRangeHigh = 5
-		nergyRangeLow = 3
+		nergyRangeLow = 0
 		energyRangeHigh = 3
-		waterRangeLow = 10
+		waterRangeLow = 0
 		waterRangeHigh = 10
 	
 
-	elif (17 < hour <= 20):
+	elif (16 < hour <= 20):
 		#doorc = 60
 		#garagec = 90
 		heatRangeLow = 30
@@ -144,5 +135,6 @@ for x in xrange (0, total): #Usually use 10080 for 1 week
 	c.setopt(pycurl.POSTFIELDS, data)
 	c.perform()
 
-	time = time + 300
 
+
+	time = time + 300
